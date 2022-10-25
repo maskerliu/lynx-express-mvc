@@ -1,0 +1,13 @@
+{
+  "plugins": [
+    ["@babel/plugin-syntax-decorators", {
+      "decoratorsBeforeExport": true
+    }],
+    [
+      "@babel/plugin-proposal-decorators",
+      {
+        "decoratorsBeforeExport": true
+      }
+    ]
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "name": "lynx-express-mvc",
+  "version": "1.0.5",
+  "description": "a express mvc support middleware",
+  "main": "index.js",
+  "type": "commonjs",
+  "scripts": {
+    "build": "rm -rf dist/** && yarn build:umd && yarn build:lib-esm && yarn build:extract-api",
+    "build:umd": "webpack -c ./webpack.config.ts --node-env production --env NODE_ENV=production",
+    "build:lib-esm": "tsc -p tsconfig.json --declarationDir ./dist/typings-temp -m es6 --outDir dist/lib-esm",
+    "build:extract-api": "api-extractor run && rm -rf dist/typings-temp",
+    "test": "node --loader ts-node/esm ./src/test/test.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maskerliu/lynx-express-mvc.git"
+  },
+  "keywords": [
+    "express",
+    "MVC",
+    "Typescript",
+    "webpack"
+  ],
+  "author": "chrisliu",
+  "license": "ISC",
+  "homepage": "https://github.com/maskerliu/lynx-express-mvc#readme",
+  "bugs": {
+    "url": "https://github.com/maskerliu/lynx-express-mvc/issues"
+  },
+  "files": ["dist/**/*"],
+  "exports": {
+    ".": {
+      "import": "./dist/lib-esm/index.js",
+      "require": "./dist/lib-umd/index.js"
+    }
+  },
+  "typings": "dist/typings/index.d.ts",
+  "dependencies": {
+    "json-bigint": "^1.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.19.6",
+    "@babel/preset-env": "^7.19.4",
+    "@babel/preset-typescript": "^7.18.6",
+    "@babel/plugin-proposal-decorators": "^7.19.6",
+    "@babel/plugin-syntax-decorators": "^7.19.0",
+    "@microsoft/api-extractor": "^7.33.4",
+    "@types/express": "^4.17.14",
+    "@types/node": "18.8.2",
+    "@types/webpack": "^5.28.0",
+    "reflect-metadata": "^0.1.13",
+    "babel-loader": "^8.2.5",
+    "express": "^4.18.2",
+    "typescript": "^4.8.4",
+    "ts-node": "^10.9.1",
+    "ts-loader": "^9.4.1",
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0"
+  }
+}

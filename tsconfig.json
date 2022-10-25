@@ -1,0 +1,34 @@
+{
+  "compilerOptions": {
+    "outDir": "dist/lib",
+    "module": "CommonJS",
+    "target": "ESNext",
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "noEmitOnError": true,
+    "noImplicitAny": false,
+    "noImplicitThis": false,
+    "strict": true,
+    "strictFunctionTypes": false,
+    "strictNullChecks": false,
+    "strictPropertyInitialization": false,
+    "suppressExcessPropertyErrors": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "lib": [
+      "ES2016"
+    ],
+  },
+  "include": [
+    "src/**/*",
+  ],
+  "exclude": [
+    "node_modules"
+  ],
+}
