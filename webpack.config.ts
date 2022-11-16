@@ -1,13 +1,16 @@
 import path from 'path'
 import webpack, { Configuration } from 'webpack'
+import pkg from './package.json'
 
 const { NoEmitOnErrorsPlugin } = webpack
 
 class MainConfig {
 
-  devtool: Configuration['devtool'] = 'source-map'
+  devtool: Configuration['devtool'] = false
   target: Configuration['target'] = 'node'
   entry: Configuration['entry'] = { index: path.join(__dirname, './src/index.ts') }
+  externals: Configuration['externals'] = [...Object.keys(pkg.dependencies)]
+
 
   module: Configuration['module'] = {
     rules: [

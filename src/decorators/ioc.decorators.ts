@@ -1,7 +1,4 @@
-/**
- * @internal
- */
-export const __PropertyMap = Symbol.for('property_info_map')
+import { __PropertyMap } from './base.decorators'
 
 /**
  * mvc web decorator which will auto build a method with response

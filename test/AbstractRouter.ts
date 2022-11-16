@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { Route } from "./decorators/webmvc.decorators"
+import { Route } from "../src/decorators/mvc.decorators"
 
 export default abstract class AbstractRouter {
 
