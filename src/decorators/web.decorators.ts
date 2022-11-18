@@ -1,25 +1,16 @@
 import { BizCode, BizResponse } from '../base.model'
-import { __RouteMap } from './base.decorators'
+import { ParamInfo, ParamType, __RouteMap } from './base.decorators'
+import { parseContext, parseParameters } from './request.parser'
 
 const __MethodParamsMap = Symbol.for('method_params_map')
-const JSONBigInt = require('json-bigint')
-
-enum ParamType {
-  Query,
-  JsonBody,
-  FileBody,
-}
-
-type ParamInfo = {
-  name: string,
-  type: number, // 0: query param, 1: body param, 2: body file
-}
 
 function _genMethodRouter(target: any, propertyKey: string, path: string) {
   let routeMap = Reflect.has(target, __RouteMap) ? Reflect.get(target, __RouteMap) : new Map()
   routeMap.set(path, propertyKey)
   Reflect.set(target, __RouteMap, routeMap)
 }
+
+
 
 function _makeResponse(target: any, propertyKey: string, descriptor: PropertyDescriptor) {
   const func = descriptor.value as Function
@@ -32,46 +23,21 @@ function _makeResponse(target: any, propertyKey: string, descriptor: PropertyDes
 
   if (!Reflect.has(target, __MethodParamsMap)) return
 
-  let methodParamMap = target[__MethodParamsMap].get(propertyKey) as Map<number, ParamInfo>
-
   descriptor.value = async function (this: any, ...args: any) {
     const [req, resp] = args
-    let arr = new Array<any>()
-    if (target[__MethodParamsMap].has(propertyKey)) {
-      methodParamMap.forEach((info, key: number) => {
-        switch (info.type) {
-          case ParamType.FileBody:
-            try {
-              arr[key] = req.files[info.name]
-            } catch (err) {
-              arr[key] = null
-            }
-            break
-          case ParamType.Query:
-            arr[key] = req.query[info.name]
-            break
-          case ParamType.JsonBody:
-            let body = req.body
-            if (req.headers['content-type'].indexOf('multipart/form-data') !== -1) {
-              body = req.body[info.name]
-            }
-
-            if (body == null) {
-              arr[key] = null
-            } else {
-              arr[key] = JSONBigInt.parse(body)
-            }
-
-            break
-        }
-        // console.error(`index: ${key}, name: ${info.name}, value: ${arg}`)
-      })
-    }
-    
     let bizResp: BizResponse<any>
     try {
+      let arr = new Array<any>()
+      if (target[__MethodParamsMap].has(propertyKey)) {
+        arr = parseParameters(req, target[__MethodParamsMap].get(propertyKey))
+      }
+      arr.push(parseContext(req))
       let result = await Reflect.apply(func, this, arr)
-      bizResp = { code: BizCode.SUCCESS, data: result }
+      if (result == null) {
+        bizResp = { code: BizCode.FAIL, msg: 'biz inner error' }
+      } else {
+        bizResp = { code: BizCode.SUCCESS, data: result }
+      }
       return result
     } catch (err) {
       bizResp = { code: BizCode.ERROR, msg: err.toString() }

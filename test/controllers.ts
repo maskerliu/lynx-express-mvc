@@ -1,4 +1,4 @@
-import { Autowired, BodyParam, Controller, FileParam, Get, Post, QueryParam } from '../src'
+import { Autowired, BizContext, BodyParam, Controller, FileParam, Get, Post, QueryParam } from '../src'
 import { TestService } from './service'
 import { FileArray, UploadedFile } from 'express-fileupload'
 import { GameItem } from './repository'
@@ -8,6 +8,13 @@ export class TestCtrl {
 
   @Autowired()
   testService: TestService
+
+
+  @Get('/test')
+  async test(@QueryParam('test') test: string, context: BizContext) {
+    console.log(context)
+    return `hello ${test}`
+  }
 
 
   @Post('/game/upload')

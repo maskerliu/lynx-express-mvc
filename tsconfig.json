@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "outDir": "dist/lib",
-    "module": "CommonJS",
+    "module": "ESNext",
     "target": "ESNext",
     "sourceMap": true,
     "declaration": true,
@@ -22,7 +22,8 @@
     "esModuleInterop": true,
     "moduleResolution": "node",
     "lib": [
-      "ES2016"
+      "ES2016",
+      "DOM"
     ],
   },
   "include": [

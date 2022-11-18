@@ -2,7 +2,7 @@ import compression from 'compression'
 import cors, { CorsOptions } from 'cors'
 import express, { Application, Response } from 'express'
 import http from 'http'
-import { Autowired, Component } from '../src'
+import { Autowired, Component } from '../src/index'
 
 import fileUpload from 'express-fileupload'
 
