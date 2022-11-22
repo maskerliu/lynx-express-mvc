@@ -35,7 +35,9 @@ class TestServer {
   private initHttpServer() {
     this.httpApp = express()
     this.corsOpt.origin = [
-      `http://localhost:8088`
+      `http://localhost:8088`,
+      `http://localhost:9081`,
+      'http://192.168.25.16:9081'
     ]
 
     this.httpApp.use(express.static('./static'))
@@ -53,9 +55,9 @@ class TestServer {
     this.httpServer = http.createServer(this.httpApp)
 
     this.httpServer.listen(
-      8088,
+      8884,
       '0.0.0.0',
-      () => console.log(`--启动本地代理Http服务--[8088]`)
+      () => console.log(`--启动本地代理Http服务--[8884]`)
     )
   }
 

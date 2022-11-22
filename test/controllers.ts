@@ -3,12 +3,22 @@ import { TestService } from './service'
 import { FileArray, UploadedFile } from 'express-fileupload'
 import { GameItem } from './repository'
 
-@Controller('/test')
+@Controller('/iot')
 export class TestCtrl {
 
   @Autowired()
   testService: TestService
 
+  @Get('/tes')
+  async tes() {
+    return 'hello world'
+  }
+
+  @Post('/updateInfo')
+  async updateInfo(@BodyParam('device') device: any) {
+    console.log(device)
+    return 'hello world'
+  }
 
   @Get('/test')
   async test(@QueryParam('test') test: string, context: BizContext) {

@@ -77,16 +77,14 @@ export function parseParameters(req: Request, paramMap: Map<any, ParamInfo>) {
         break
       case ParamType.JsonBody:
         let body = req.body
-        if (req.headers['content-type'].indexOf('multipart/form-data') !== -1) {
-          body = req.body[info.name]
-        }
-
-        if (body == null) {
-          arr[key] = null
+        let contentType = req.headers['content-type']
+        if (contentType.indexOf('multipart/form-data') !== -1) {
+          arr[key] = JSONBigInt.parse(req.body[info.name])
+        } else if (contentType.indexOf('application/json') !== -1) {
+          arr[key] = body
         } else {
-          arr[key] = JSONBigInt.parse(body)
+          arr[key] = null
         }
-
         break
     }
     // console.error(`index: ${key}, name: ${info.name}, value: ${arg}`)

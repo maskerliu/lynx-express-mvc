@@ -21,17 +21,23 @@ function _makeResponse(target: any, propertyKey: string, descriptor: PropertyDes
   // let params: ArrType = []
   // type IdxParamType = ArrType[0]
 
-  if (!Reflect.has(target, __MethodParamsMap)) return
-
   descriptor.value = async function (this: any, ...args: any) {
     const [req, resp] = args
     let bizResp: BizResponse<any>
     try {
       let arr = new Array<any>()
-      if (target[__MethodParamsMap].has(propertyKey)) {
+      if (Reflect.has(target, __MethodParamsMap) && target[__MethodParamsMap].has(propertyKey)) {
         arr = parseParameters(req, target[__MethodParamsMap].get(propertyKey))
       }
-      arr.push(parseContext(req))
+      try {
+        arr.push(parseContext(req))
+      } catch (err) {
+        arr.push(null)
+      }
+
+      arr.push(req)
+      arr.push(resp)
+
       let result = await Reflect.apply(func, this, arr)
       if (result == null) {
         bizResp = { code: BizCode.FAIL, msg: 'biz inner error' }
@@ -40,6 +46,7 @@ function _makeResponse(target: any, propertyKey: string, descriptor: PropertyDes
       }
       return result
     } catch (err) {
+      console.log(err)
       bizResp = { code: BizCode.ERROR, msg: err.toString() }
     } finally {
       resp.json(bizResp)

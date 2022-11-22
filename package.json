@@ -1,6 +1,6 @@
 {
   "name": "lynx-express-mvc",
-  "version": "1.0.16",
+  "version": "1.0.21",
   "description": "a express mvc support middleware",
   "main": "index.js",
   "type": "module",
@@ -9,7 +9,7 @@
     "build:umd": "webpack -c ./webpack.config.ts --node-env production --env NODE_ENV=production",
     "build:lib-esm": "tsc -p tsconfig.json --declarationDir ./dist/typings-temp -m es6 --outDir dist/lib-esm",
     "build:extract-api": "api-extractor run && rm -rf dist/typings-temp",
-    "test": "node --experimental-specifier-resolution=node --loader ts-node/esm ./test/index.ts"
+    "dev": "node --experimental-specifier-resolution=node --loader ts-node/esm ./test/index.ts"
   },
   "repository": {
     "type": "git",
