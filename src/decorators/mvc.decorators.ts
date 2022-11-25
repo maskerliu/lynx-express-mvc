@@ -130,18 +130,21 @@ import PouchDB from 'pouchdb-node'
  * @param path - db path 
  * @param name - db name
  */
-function Repository(dir: string, name: string, indexs: Array<string>) {
+function Repository(dir: string, name: string, indexs?: Array<string>) {
   return <T extends { new(...args: any[]): {} }>(constructor: T) => {
     return class extends constructor {
       async init() {
         PouchDB.plugin(PouchFind)
         this['pouchdb'] = new PouchDB(path.join(dir, name))
 
-        try {
-          await this['pouchdb'].createIndex({ index: { fields: indexs }, })
-        } catch (err) {
-          console.error('initDB', err)
+        if (indexs) {
+          try {
+            await this['pouchdb'].createIndex({ index: { fields: indexs }, })
+          } catch (err) {
+            console.error('initDB', err)
+          }
         }
+
         if (!Reflect.has(constructor.prototype, __PropertyMap)) { return this }
 
         let propertyMap = Reflect.get(constructor.prototype, __PropertyMap) as Map<string, any>

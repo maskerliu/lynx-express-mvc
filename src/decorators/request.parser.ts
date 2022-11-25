@@ -41,7 +41,7 @@ export function parseContext(req: Request): BizContext {
 
   // let ua = 'mapi/1.0(Android 12;com.github.lynxchina.argus 1.0.1;vivo:V2171A;huaiwei)'
   let ua = req.headers[BIZ_HEADER_UA] as string
-  let regArr = ua.match(/[0-9A-Za-z\/.\ :]+/g)
+  let regArr = ua.match(/[0-9A-Za-z\/-\.\ :]+/g)
   let [os, version] = regArr[1].split('\ ')
   let [brand, model] = regArr[3].split(':')
   let [appId, appVersion] = regArr[2].split('\ ')
@@ -79,7 +79,11 @@ export function parseParameters(req: Request, paramMap: Map<any, ParamInfo>) {
         let body = req.body
         let contentType = req.headers['content-type']
         if (contentType.indexOf('multipart/form-data') !== -1) {
-          arr[key] = JSONBigInt.parse(req.body[info.name])
+          try {
+            arr[key] = JSONBigInt.parse(req.body[info.name]) // try parse as JSON object
+          } catch (err) {
+            arr[key] = req.body[info.name] // just as plain text
+          }
         } else if (contentType.indexOf('application/json') !== -1) {
           arr[key] = body
         } else {
