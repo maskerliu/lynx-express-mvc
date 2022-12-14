@@ -41,10 +41,10 @@ export function parseContext(req: Request): BizContext {
 
   // let ua = 'mapi/1.0(Android 12;com.github.lynxchina.argus 1.0.1;vivo:V2171A;huaiwei)'
   let ua = req.headers[BIZ_HEADER_UA] as string
-  let regArr = ua.match(/[0-9A-Za-z\/-\.\ :]+/g)
-  let [os, version] = regArr[1].split('\ ')
+  let regArr = ua.match(/[0-9A-Za-z\/\.\s:-]+/g)
+  let [os, version] = regArr[1].split(' ')
   let [brand, model] = regArr[3].split(':')
-  let [appId, appVersion] = regArr[2].split('\ ')
+  let [appId, appVersion] = regArr[2].split(' ')
   let deviceInfo: UserDevice = { os, version, brand, model }
 
   let context: BizContext = {

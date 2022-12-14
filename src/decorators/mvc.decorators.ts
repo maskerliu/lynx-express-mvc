@@ -16,11 +16,11 @@ import { __Controllers, __RouteMap } from './base.decorators'
 function Router() {
   return <T extends { new(...args: any[]): {} }>(constructor: T) => {
     return class extends constructor {
-      init() {
+      instance() {
         if (this[__Controllers] == null) this[__Controllers] = new Array()
-        __IOC_Controller_Map.forEach((func, key) => {
-          this[__Controllers].push(new func().init())
-          // console.log("[Router]", key, func)
+        __IOC_Controller_Map.forEach((Clazz, key) => {
+          this[__Controllers].push(new Clazz().instance())
+          // console.log("[Router]", key, Clazz)
         })
         return this
       }
@@ -58,16 +58,18 @@ function Route(): MethodDecorator {
 function _genConstructor<T extends { new(...args: any[]): {} }>(constructor: T) {
 
   return class extends constructor {
-    init() {
-
+    instance() {
       if (!Reflect.has(constructor.prototype, __PropertyMap)) { return this }
 
       let propertyMap = Reflect.get(constructor.prototype, __PropertyMap) as Map<string, any>
       for (let key of propertyMap.keys()) {
-        let ClassDefined = propertyMap.get(key)
+        let Clazz = propertyMap.get(key)
         if (!__IOC_Container.has(key)) {
-          let instance = new ClassDefined()
-          try { instance.init() } catch (err) { }
+          let instance = new Clazz()
+          instance.instance()
+          if (Clazz.prototype['init']) {
+            instance.init()
+          }
           __IOC_Container.set(key, instance)
           // console.log('[constructor]', `[${constructor.name}] add new instance of\t\t`, ClassDefined)
         } else {
@@ -130,20 +132,12 @@ import PouchDB from 'pouchdb-node'
  * @param path - db path 
  * @param name - db name
  */
-function Repository(dir: string, name: string, indexs?: Array<string>) {
+function Repository(dir: string, name: string) {
   return <T extends { new(...args: any[]): {} }>(constructor: T) => {
     return class extends constructor {
-      async init() {
+      async instance() {
         PouchDB.plugin(PouchFind)
         this['pouchdb'] = new PouchDB(path.join(dir, name))
-
-        if (indexs) {
-          try {
-            await this['pouchdb'].createIndex({ index: { fields: indexs }, })
-          } catch (err) {
-            console.error('initDB', err)
-          }
-        }
 
         if (!Reflect.has(constructor.prototype, __PropertyMap)) { return this }
 
@@ -152,7 +146,8 @@ function Repository(dir: string, name: string, indexs?: Array<string>) {
           let ClassDefined = propertyMap.get(key)
           if (!__IOC_Container.has(key)) {
             let instance = new ClassDefined()
-            try { instance.init() } catch (err) { }
+            instance.instance()
+            try { await instance.init() } catch (err) { }
             __IOC_Container.set(key, instance)
             // console.log('[constructor]', `[${constructor.name}] add new instance of\t\t`, ClassDefined)
           } else {

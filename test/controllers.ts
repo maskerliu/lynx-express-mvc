@@ -1,13 +1,17 @@
+import { UploadedFile } from 'express-fileupload'
 import { Autowired, BizContext, BodyParam, Controller, FileParam, Get, Post, QueryParam } from '../src'
-import { TestService } from './service'
-import { FileArray, UploadedFile } from 'express-fileupload'
 import { GameItem } from './repository'
+import { TestService } from './service'
 
 @Controller('/iot')
 export class TestCtrl {
 
   @Autowired()
   testService: TestService
+
+  init() {
+    console.log('hello world')
+  }
 
   @Get('/tes')
   async tes() {

@@ -22,6 +22,7 @@ class TestServer {
     credentials: true,
     optionsSuccessStatus: 200,
   }
+
   public async start() {
     this.testRouter.init()
     this.initHttpServer()
@@ -67,5 +68,5 @@ class TestServer {
 }
 
 const localServer: any = new TestServer()
-localServer.init()
+localServer.instance()
 localServer.start()

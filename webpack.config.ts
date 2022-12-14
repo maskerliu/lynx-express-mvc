@@ -1,36 +1,42 @@
 import path from 'path'
+import { fileURLToPath } from 'url'
 import webpack, { Configuration } from 'webpack'
-import pkg from './package.json'
+import pkg from './package.json' assert { type: 'json' }
 
 const { NoEmitOnErrorsPlugin } = webpack
 
-class MainConfig {
+const dirname = path.dirname(fileURLToPath(import.meta.url))
 
-  devtool: Configuration['devtool'] = false
+export default class MainConfig {
+
+  devtool: Configuration['devtool'] = 'eval-cheap-module-source-map'
+  mode: Configuration['mode'] = 'development'
   target: Configuration['target'] = 'node'
-  entry: Configuration['entry'] = { index: path.join(__dirname, './src/index.ts') }
+  entry: Configuration['entry'] = { index: path.join(dirname, './src/index.ts') }
   externals: Configuration['externals'] = [...Object.keys(pkg.dependencies)]
-
 
   module: Configuration['module'] = {
     rules: [
       {
         test: /.ts$/,
-        loader: 'babel-loader',
+        loader: 'ts-loader',
         exclude: /node_modules/,
         options: {
-          presets: ['@babel/env', '@babel/typescript'],
+          transpileOnly: true
         },
       },
     ],
   }
 
-  node: Configuration['node'] = {}
+  node: Configuration['node'] = {
+    __dirname: process.env.NODE_ENV !== 'production',
+    __filename: process.env.NODE_ENV !== 'production'
+  }
 
   output: Configuration['output'] = {
-    filename: '[name].js',
+    filename: '[name].cjs',
     library: { type: 'commonjs2' },
-    path: path.join(__dirname, './dist/lib-umd')
+    path: path.join(dirname, './dist/lib-umd')
   }
 
   plugins: Configuration['plugins'] = [
@@ -44,6 +50,10 @@ class MainConfig {
     },
     extensions: ['.js', '.ts', '.json', '.node']
   }
-}
 
-export default new MainConfig()
+  init() {
+    if (process.env.NODE_ENV == 'production') {
+      this.devtool = false
+    }
+  }
+}

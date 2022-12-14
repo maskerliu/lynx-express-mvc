@@ -1,6 +1,7 @@
 import { UploadedFile } from 'express-fileupload'
 import fs from 'fs'
 import path from 'path'
+import { inherits } from 'util'
 import { Autowired, Service } from '../src'
 import TestRepo, { GameItem } from './repository'
 
@@ -12,6 +13,11 @@ export class TestService {
 
   @Autowired()
   testRepo: TestRepo
+
+
+  init() {
+    console.log('hello world')
+  }
 
 
   hello(name: string): string {
