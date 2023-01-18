@@ -15,6 +15,19 @@ export interface BizResponse<T> {
   msg?: string,
   data?: T
 }
+/**
+ * @public
+ */
+export class BizFail {
+  code: BizCode
+  msg: string
+
+  constructor(code: number, msg: string) {
+    if (code < BizCode.FAIL || code > 5000) throw 'biz code must between 4000~5000'
+    this.code = code
+    this.msg = msg
+  }
+}
 
 /**
  * @public
@@ -41,7 +54,7 @@ export enum UserNetwork {
  * @public
  */
 export interface BizContext {
-  token?: string, 
+  token?: string,
   uid?: string, // 用户ID
   did: string, // 设备ID
   ua: string, // UserAgent example: mapi/1.0 (Android 12;com.github.lynxchina.argus 1.0.1;vivo:V2171A;huaiwei)

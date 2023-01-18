@@ -1,4 +1,4 @@
-import { BizCode, BizResponse } from '../base.model'
+import { BizCode, BizFail, BizResponse } from '../base.model'
 import { ParamInfo, ParamType, __RouteMap } from './base.decorators'
 import { parseContext, parseParameters } from './request.parser'
 
@@ -40,14 +40,18 @@ function _makeResponse(target: any, propertyKey: string, descriptor: PropertyDes
 
       let result = await Reflect.apply(func, this, arr)
       if (result == null) {
-        bizResp = { code: BizCode.FAIL, msg: 'biz inner error' }
+        bizResp = { code: BizCode.FAIL, msg: 'biz inner error, no result found' }
       } else {
         bizResp = { code: BizCode.SUCCESS, data: result }
       }
       return result
     } catch (err) {
-      console.log(err)
-      bizResp = { code: BizCode.ERROR, msg: err.toString() }
+      console.error(err)
+      if (err instanceof BizFail) {
+        bizResp = { code: err.code, msg: err.msg }
+      } else {
+        bizResp = { code: BizCode.ERROR, msg: err.toString() }
+      }
     } finally {
       resp.json(bizResp)
       resp.end()
