@@ -1,8 +1,8 @@
 {
   "metadata": {
     "toolPackage": "@microsoft/api-extractor",
-    "toolVersion": "7.33.4",
-    "schemaVersion": 1010,
+    "toolVersion": "7.47.9",
+    "schemaVersion": 1011,
     "oldestForwardsCompatibleVersion": 1001,
     "tsdocConfig": {
       "$schema": "https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json",
@@ -619,6 +619,7 @@
           ],
           "fileUrlPath": "src/base.model.ts",
           "releaseTag": "Public",
+          "isAbstract": false,
           "name": "BizFail",
           "preserveMemberOrder": false,
           "members": [
@@ -698,7 +699,8 @@
                 "endIndex": 2
               },
               "isStatic": false,
-              "isProtected": false
+              "isProtected": false,
+              "isAbstract": false
             },
             {
               "kind": "Property",
@@ -727,7 +729,8 @@
                 "endIndex": 2
               },
               "isStatic": false,
-              "isProtected": false
+              "isProtected": false,
+              "isAbstract": false
             }
           ],
           "implementsTokenRanges": []
@@ -910,7 +913,7 @@
             },
             {
               "kind": "Content",
-              "text": "<T extends new (...args: any[]) => {}>(constructor: T) => {\n    new (...args: any[]): {\n        instance(): any;\n    };\n} & T"
+              "text": "<T extends {\n    new (...args: any[]): {};\n}>(constructor: T) => {\n    new (...args: any[]): {\n        instance(): any;\n    };\n} & T"
             },
             {
               "kind": "Content",
@@ -955,7 +958,7 @@
             },
             {
               "kind": "Content",
-              "text": "<T extends new (...args: any[]) => {}>(constructor: T) => {\n    new (...args: any[]): {\n        instance(): any;\n    };\n} & T"
+              "text": "<T extends {\n    new (...args: any[]): {};\n}>(constructor: T) => {\n    new (...args: any[]): {\n        instance(): any;\n    };\n} & T"
             },
             {
               "kind": "Content",
@@ -1208,7 +1211,7 @@
             },
             {
               "kind": "Content",
-              "text": "<T extends new (...args: any[]) => {}>(constructor: T) => {\n    new (...args: any[]): {\n        instance(): "
+              "text": "<T extends {\n    new (...args: any[]): {};\n}>(constructor: T) => {\n    new (...args: any[]): {\n        instance(): "
             },
             {
               "kind": "Reference",
@@ -1291,7 +1294,7 @@
             },
             {
               "kind": "Content",
-              "text": "<T extends new (...args: any[]) => {}>(constructor: T) => {\n    new (...args: any[]): {\n        instance(): any;\n    };\n} & T"
+              "text": "<T extends {\n    new (...args: any[]): {};\n}>(constructor: T) => {\n    new (...args: any[]): {\n        instance(): any;\n    };\n} & T"
             },
             {
               "kind": "Content",
@@ -1327,7 +1330,7 @@
             },
             {
               "kind": "Content",
-              "text": "<T extends new (...args: any[]) => {}>(constructor: T) => {\n    new (...args: any[]): {\n        instance(): any;\n    };\n} & T"
+              "text": "<T extends {\n    new (...args: any[]): {};\n}>(constructor: T) => {\n    new (...args: any[]): {\n        instance(): any;\n    };\n} & T"
             },
             {
               "kind": "Content",
