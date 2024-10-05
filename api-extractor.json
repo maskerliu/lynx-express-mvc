@@ -5,26 +5,17 @@
   "compiler": {},
   "apiReport": {
     "enabled": false
-    // "reportFileName": "<unscopedPackageName>.api.md",
-    // "reportFolder": "<projectFolder>/etc/",
-    // "reportTempFolder": "<projectFolder>/temp/"
   },
   "docModel": {
     "enabled": true
-    // "apiJsonFilePath": "<projectFolder>/temp/<unscopedPackageName>.api.json"
   },
   "dtsRollup": {
     "enabled": true,
     "untrimmedFilePath": "<projectFolder>/dist/typings/index.d.ts"
-    // "betaTrimmedFilePath": "<projectFolder>/dist/<unscopedPackageName>-beta.d.ts",
-    // "publicTrimmedFilePath": "<projectFolder>/dist/<unscopedPackageName>-public.d.ts",
-    // "omitTrimmingComments": true
   },
   "tsdocMetadata": {
     "enabled": false
-    // "tsdocMetadataFilePath": "<projectFolder>/dist/tsdoc-metadata.json"
   },
-  // "newlineKind": "crlf",
   "messages": {
     "compilerMessageReporting": {
       "default": {
@@ -47,10 +38,6 @@
         "logLevel": "warning",
         "addToApiReportFile": false
       }
-      // "tsdoc-link-tag-unescaped-text": {
-      //   "logLevel": "warning",
-      //   "addToApiReportFile": true
-      // },
     }
   }
 }

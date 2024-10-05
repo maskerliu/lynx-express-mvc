@@ -12,8 +12,9 @@ process.env.NODE_ENV = Run_Mode_PROD
 process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = 'true'
 
 function run() {
-  deleteSync(['dist/lib-umd/*', '!.gitkeep'])
+  deleteSync(['dist/typings-temp', '!.gitkeep'])
   pack(new Config())
+  deleteSync(['dist/typings-temp'])
 }
 
 function pack(config: Config): Promise<string> {
